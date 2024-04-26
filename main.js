@@ -177,10 +177,8 @@ async function start() {
 
 start();
 
-process.on("unhandledRejection", function(error) {
-  if (error.Error === "rate-overlimit") { 
-    return;
-  } else {
-    console.error(`[${new Date().toISOString()}] Unhandled Rejection:`, error);
-  }
+process.on('uncaughtException', (error) => {
+  if (error.message.includes('Connection Closed')) return;
+  if (error.message.includes('Timed out')) return;
+  console.error('Error:', error);
 });
